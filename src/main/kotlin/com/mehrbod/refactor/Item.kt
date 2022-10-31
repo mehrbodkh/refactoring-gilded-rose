@@ -29,21 +29,14 @@ class AgedBrie(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sel
 
 class BackstagePass(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sellIn, quality) {
     override fun update() {
-        if (quality < 50) {
-            quality++
-        }
-
+        quality = quality.safeQualityChange(1)
         if (sellIn < 11) {
-            if (quality < 50) {
-                quality++
-            }
+            quality = quality.safeQualityChange(1)
+        }
+        if (sellIn < 6) {
+            quality = quality.safeQualityChange(1)
         }
 
-        if (sellIn < 6) {
-            if (quality < 50) {
-                quality++
-            }
-        }
         sellIn--
     }
 }
@@ -57,25 +50,35 @@ class Sulfuras(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sel
 class Conjured(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sellIn, quality) {
     override fun update() {
         sellIn--
-        if (sellIn < 0) {
-            quality -= 4
+        quality = if (sellIn < 0) {
+            quality.safeQualityChange(-4)
         } else {
-            quality -= 2
+            quality.safeQualityChange(-2)
         }
-
-        if (quality < 0) quality = 0
     }
 }
 
 class UnknownItem(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sellIn, quality) {
     override fun update() {
         sellIn--
-        if (sellIn < 0) {
-            quality -= 2
+        quality = if (sellIn < 0) {
+            quality.safeQualityChange(-2)
         } else {
-            quality--
+            quality.safeQualityChange(-1)
         }
-
-        if (quality < 0) quality = 0
     }
+}
+
+fun Int.safeQualityChange(change: Int): Int {
+    var quality = this + change
+
+    if (quality < 0) {
+        quality = 0
+    }
+
+    if (quality > 50) {
+        quality = 50
+    }
+
+    return quality
 }
