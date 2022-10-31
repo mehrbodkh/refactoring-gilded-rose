@@ -21,9 +21,7 @@ abstract class AbstractItem(name: String, sellIn: Int, quality: Int) : Item(name
 class AgedBrie(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sellIn, quality) {
     override fun update() {
         sellIn--
-        if (quality < 50) {
-            quality++
-        }
+        quality = quality.safeQualityChange(1)
     }
 }
 
