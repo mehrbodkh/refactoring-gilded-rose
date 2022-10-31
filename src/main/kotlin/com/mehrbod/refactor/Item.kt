@@ -10,6 +10,7 @@ fun Item.asAbstractItem(): AbstractItem = when (name) {
     "Aged Brie" -> AgedBrie(name, sellIn, quality)
     "Backstage passes to a TAFKAL80ETC concert" -> BackstagePass(name, sellIn, quality)
     "Sulfuras, Hand of Ragnaros" -> Sulfuras(name, sellIn, quality)
+    "Conjured Mana Cake" -> Conjured(name, sellIn, quality)
     else -> UnknownItem(name, sellIn, quality)
 }
 
@@ -50,6 +51,19 @@ class BackstagePass(name: String, sellIn: Int, quality: Int) : AbstractItem(name
 class Sulfuras(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sellIn, quality) {
     override fun update() {
         // nothing happens here
+    }
+}
+
+class Conjured(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sellIn, quality) {
+    override fun update() {
+        sellIn--
+        if (sellIn < 0) {
+            quality -= 4
+        } else {
+            quality -= 2
+        }
+
+        if (quality < 0) quality = 0
     }
 }
 
