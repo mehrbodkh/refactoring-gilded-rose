@@ -11,7 +11,7 @@ fun Item.asAbstractItem(): AbstractItem = when (name) {
     "Backstage passes to a TAFKAL80ETC concert" -> BackstagePass(name, sellIn, quality)
     "Sulfuras, Hand of Ragnaros" -> Sulfuras(name, sellIn, quality)
     "Conjured Mana Cake" -> Conjured(name, sellIn, quality)
-    else -> UnknownItem(name, sellIn, quality)
+    else -> NormalItem(name, sellIn, quality)
 }
 
 const val NORMAL_DAY_DEPRECIATION = -1
@@ -64,7 +64,7 @@ class Conjured(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sel
     }
 }
 
-class UnknownItem(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sellIn, quality) {
+class NormalItem(name: String, sellIn: Int, quality: Int) : AbstractItem(name, sellIn, quality) {
     override fun update() {
         sellIn--
         quality = if (sellIn < 0) {
