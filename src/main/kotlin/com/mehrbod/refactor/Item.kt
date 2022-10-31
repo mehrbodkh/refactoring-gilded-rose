@@ -40,6 +40,10 @@ class BackstagePass(name: String, sellIn: Int, quality: Int) : AbstractItem(name
         }
 
         sellIn--
+
+        if (sellIn < 0) {
+            quality = MIN_QUALITY
+        }
     }
 }
 
